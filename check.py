@@ -78,10 +78,14 @@ def main():
         send_telegram("🧪 Тест: облачная проверка CGPeers работает.\n"
                       f"Сейчас признаков регистрации: {len(signals)}.\n{BASE}")
     elif signals and fingerprint != last:
-        send_telegram("🚨 CGPeers: похоже, открылась регистрация!\n\n"
+        send_telegram("🚨🚨🚨 CGPeers: похоже, открылась регистрация!\n\n"
                       + "\n".join(signals[:8])
                       + f"\n\n👉 {BASE}\n👉 Discord: https://discord.com/channels/"
                         "1381341157421748444/1382681623581167656")
+        # Repeat so the phone rings several times and the alert is not missed.
+        for n in (2, 3):
+            time.sleep(20)
+            send_telegram(f"🔔 Напоминание {n}/3: CGPeers — проверьте регистрацию! {BASE}")
 
     # The month field changes state.json once a month, so the workflow commits and
     # GitHub does not disable the schedule after 60 days without repo activity.
