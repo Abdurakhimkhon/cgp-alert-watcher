@@ -1,6 +1,7 @@
 name: CGPeers registration check
 
 on:
+  # Every 5 minutes (GitHub may delay scheduled runs under load).
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
