@@ -10,6 +10,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -82,8 +83,11 @@ def main():
                       + f"\n\n👉 {BASE}\n👉 Discord: https://discord.com/channels/"
                         "1381341157421748444/1382681623581167656")
 
+    # The month field changes state.json once a month, so the workflow commits and
+    # GitHub does not disable the schedule after 60 days without repo activity.
     with open(STATE_FILE, "w", encoding="utf-8") as f:
-        json.dump({"fingerprint": fingerprint, "signals": signals}, f, ensure_ascii=False, indent=1)
+        json.dump({"fingerprint": fingerprint, "signals": signals,
+                   "month": time.strftime("%Y-%m", time.gmtime())}, f, ensure_ascii=False, indent=1)
     print(f"signals={len(signals)} changed={fingerprint != last}")
 
 
