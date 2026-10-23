@@ -41,7 +41,8 @@ def visible_text(html):
 
 
 def send_telegram(text):
-    token, chat_id = os.environ["TELEGRAM_TOKEN"], os.environ["TELEGRAM_CHAT_ID"]
+    token = os.environ["TELEGRAM_TOKEN"].strip("﻿ \r\n")
+    chat_id = os.environ["TELEGRAM_CHAT_ID"].strip("﻿ \r\n")
     data = urllib.parse.urlencode({"chat_id": chat_id, "text": text,
                                    "disable_web_page_preview": "true"}).encode()
     urllib.request.urlopen(f"https://api.telegram.org/bot{token}/sendMessage", data, timeout=30)
