@@ -90,6 +90,9 @@ def main():
         for n in (2, 3):
             time.sleep(20)
             send_telegram(f"🔔 Напоминание {n}/3: CGPeers — проверьте регистрацию! {BASE}")
+    elif not signals and last and not simulate:
+        send_telegram("ℹ️ CGPeers: признаки регистрации пропали — похоже, набор снова закрыт.\n"
+                      "Слежение продолжается, при следующем открытии придёт новое уведомление.")
 
     if simulate:
         print(f"simulated alert sent, signals={len(signals)}")
