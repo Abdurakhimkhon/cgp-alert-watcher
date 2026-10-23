@@ -67,6 +67,10 @@ def main():
         if status not in (404, 410):
             signals.append(f"{path} отвечает {status} (раньше 404)")
 
+    simulate = os.environ.get("SIMULATE") == "1"
+    if simulate:
+        signals.append("ТЕСТ-ИМИТАЦИЯ: это проверка, регистрация на самом деле не открыта")
+
     fingerprint = hashlib.sha256("\n".join(sorted(signals)).encode()).hexdigest() if signals else ""
     try:
         with open(STATE_FILE, encoding="utf-8") as f:
@@ -87,6 +91,9 @@ def main():
             time.sleep(20)
             send_telegram(f"🔔 Напоминание {n}/3: CGPeers — проверьте регистрацию! {BASE}")
 
+    if simulate:
+        print(f"simulated alert sent, signals={len(signals)}")
+        return
     # The month field changes state.json once a month, so the workflow commits and
     # GitHub does not disable the schedule after 60 days without repo activity.
     with open(STATE_FILE, "w", encoding="utf-8") as f:
